@@ -2,6 +2,11 @@
 
 Segno zodiacale per gli iscritti (scelto in automatico dalla data di nascita, l'utente ha sempre l'ultima parola), dodici icone animate originali, oroscopo settimanale e mensile aggiornato da un cron.
 
+![Version](https://img.shields.io/badge/version-1.0.5-105080)
+![phpBB](https://img.shields.io/badge/phpBB-3.3.x-377a33)
+![PHP](https://img.shields.io/badge/PHP-%3E%3D7.4-377a33)
+![License](https://img.shields.io/badge/license-GPL--2.0--only-7f7f7f)
+
 ## Installazione
 1. Carica la cartella `salvocortesiano/zodiacsigns` in `ext/` (percorso finale: `ext/salvocortesiano/zodiacsigns/composer.json`).
 2. ACP > Personalizza > Gestione estensioni > **Zodiac Signs** > Attiva.
