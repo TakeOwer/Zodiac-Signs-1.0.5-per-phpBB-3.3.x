@@ -1,0 +1,8 @@
+{% if S_ZODIAC_ENABLED %}
+<div id="zodiac-config" hidden
+	data-urls="{{ ZODIAC_HORO_URLS }}"
+	data-loading="{{ lang('ZODIAC_HORO_LOADING')|e('html_attr') }}"
+	data-error="{{ lang('ZODIAC_HORO_ERROR')|e('html_attr') }}"
+	data-close="{{ lang('ZODIAC_CLOSE')|e('html_attr') }}"></div>
+{% INCLUDEJS '@salvocortesiano_zodiacsigns/zodiacsigns.js' %}
+{% endif %}

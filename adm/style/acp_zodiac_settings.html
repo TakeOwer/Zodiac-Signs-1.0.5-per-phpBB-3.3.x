@@ -1,0 +1,92 @@
+{% include 'overall_header.html' %}
+
+<h1>{{ lang('ACP_ZODIAC_SETTINGS') }}</h1>
+{% include 'acp_zodiac_badges.html' %}
+<p>{{ lang('ACP_ZODIAC_SETTINGS_EXPLAIN') }}</p>
+
+{% if S_ERROR %}<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>{% endif %}
+
+<form id="zodiac_settings" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_GENERAL') }}</legend>
+		<dl>
+			<dt><label for="zodiac_enable">{{ lang('ACP_ZODIAC_ENABLE') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_ENABLE_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" id="zodiac_enable" name="zodiac_enable" value="1"{% if ZODIAC_ENABLE %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="zodiac_enable" value="0"{% if not ZODIAC_ENABLE %} checked="checked"{% endif %}> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="zodiac_groups">{{ lang('ACP_ZODIAC_GROUPS') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_GROUPS_EXPLAIN') }}</span></dt>
+			<dd><select id="zodiac_groups" name="zodiac_groups[]" multiple="multiple" size="10">
+				{% for group in groups %}<option value="{{ group.ID }}"{% if group.S_SELECTED %} selected="selected"{% endif %}{% if group.S_SPECIAL %} class="sep"{% endif %}>{{ group.NAME }}</option>{% endfor %}
+			</select></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_REGISTRATION') }}</legend>
+		<dl>
+			<dt><label for="zodiac_register_mode">{{ lang('ACP_ZODIAC_REGISTER_MODE') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_REGISTER_MODE_EXPLAIN') }}</span></dt>
+			<dd><select id="zodiac_register_mode" name="zodiac_register_mode">
+				<option value="0"{% if ZODIAC_REGISTER_MODE == 0 %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_REGISTER_OFF') }}</option>
+				<option value="1"{% if ZODIAC_REGISTER_MODE == 1 %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_REGISTER_OPTIONAL') }}</option>
+				<option value="2"{% if ZODIAC_REGISTER_MODE == 2 %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_REGISTER_REQUIRED') }}</option>
+			</select></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_UCP') }}</legend>
+		<dl>
+			<dt><label for="zodiac_ucp_required">{{ lang('ACP_ZODIAC_UCP_REQUIRED') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_UCP_REQUIRED_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" id="zodiac_ucp_required" name="zodiac_ucp_required" value="1"{% if ZODIAC_UCP_REQUIRED %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="zodiac_ucp_required" value="0"{% if not ZODIAC_UCP_REQUIRED %} checked="checked"{% endif %}> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="zodiac_remind">{{ lang('ACP_ZODIAC_REMIND') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_REMIND_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" id="zodiac_remind" name="zodiac_remind" value="1"{% if ZODIAC_REMIND %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="zodiac_remind" value="0"{% if not ZODIAC_REMIND %} checked="checked"{% endif %}> {{ lang('NO') }}</label></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_BIRTHDAY') }}</legend>
+		<dl>
+			<dt><label for="zodiac_auto_birthday">{{ lang('ACP_ZODIAC_AUTO_BIRTHDAY') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_AUTO_BIRTHDAY_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" id="zodiac_auto_birthday" name="zodiac_auto_birthday" value="1"{% if ZODIAC_AUTO_BIRTHDAY %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="zodiac_auto_birthday" value="0"{% if not ZODIAC_AUTO_BIRTHDAY %} checked="checked"{% endif %}> {{ lang('NO') }}</label></dd>
+		</dl>
+		{% if not S_BIRTHDAYS_ALLOWED %}<p class="error">{{ lang('ACP_ZODIAC_BIRTHDAYS_OFF') }}</p>{% endif %}
+		<dl>
+			<dt><label>{{ lang('ACP_ZODIAC_ASSIGN') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_ASSIGN_EXPLAIN', ZODIAC_WITHOUT_SIGN, ZODIAC_WITH_BIRTHDAY) }}</span></dt>
+			<dd><input class="button2" type="submit" name="assign_birthdays" value="{{ lang('ACP_ZODIAC_ASSIGN_BUTTON') }}"{% if not ZODIAC_WITH_BIRTHDAY %} disabled="disabled"{% endif %}></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_DISPLAY') }}</legend>
+		<dl>
+			<dt><label for="zodiac_show_viewtopic">{{ lang('ACP_ZODIAC_SHOW_VIEWTOPIC') ~ lang('COLON') }}</label></dt>
+			<dd><label><input type="radio" class="radio" id="zodiac_show_viewtopic" name="zodiac_show_viewtopic" value="1"{% if ZODIAC_SHOW_VIEWTOPIC %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="zodiac_show_viewtopic" value="0"{% if not ZODIAC_SHOW_VIEWTOPIC %} checked="checked"{% endif %}> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="zodiac_show_profile">{{ lang('ACP_ZODIAC_SHOW_PROFILE') ~ lang('COLON') }}</label></dt>
+			<dd><label><input type="radio" class="radio" id="zodiac_show_profile" name="zodiac_show_profile" value="1"{% if ZODIAC_SHOW_PROFILE %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="zodiac_show_profile" value="0"{% if not ZODIAC_SHOW_PROFILE %} checked="checked"{% endif %}> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="zodiac_badge_size">{{ lang('ACP_ZODIAC_BADGE_SIZE') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_BADGE_SIZE_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="zodiac_badge_size" name="zodiac_badge_size" min="16" max="64" value="{{ ZODIAC_BADGE_SIZE }}"> px</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}">
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% include 'acp_zodiac_footer.html' %}
+
+{% include 'overall_footer.html' %}

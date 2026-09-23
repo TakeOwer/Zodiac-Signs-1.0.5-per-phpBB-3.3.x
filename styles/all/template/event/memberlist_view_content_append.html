@@ -1,0 +1,17 @@
+{% if MEMBER_S_ZODIAC_SIGN and S_ZODIAC_MEMBER_HORO %}
+<div class="panel bg1 zodiac-panel">
+	<div class="inner">
+		<div class="zodiac-card zodiac-el-{{ MEMBER_ZODIAC_ELEMENT }}">
+			<div class="zodiac-card-head"><img src="{{ MEMBER_ZODIAC_IMG }}" alt="" width="64" height="64"><h3>{{ ZODIAC_MEMBER_TITLE }}</h3></div>
+			{% for h in zodiac_member_horo %}
+			<section class="zodiac-card-period">
+				<h4>{{ h.PERIOD }}</h4>
+				<p>{{ h.TEXT }}</p>
+				{% if h.NOTE or h.SOURCE %}<p class="zodiac-card-meta">{{ h.NOTE }}{% if h.NOTE and h.SOURCE %} &ndash; {% endif %}{{ h.SOURCE }}</p>{% endif %}
+			</section>
+			{% endfor %}
+			{% if S_ZODIAC_MEMBER_HORO_EMPTY %}<p class="zodiac-card-empty">{{ lang('ZODIAC_HORO_NONE') }}</p>{% endif %}
+		</div>
+	</div>
+</div>
+{% endif %}

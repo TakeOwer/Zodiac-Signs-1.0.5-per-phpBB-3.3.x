@@ -1,0 +1,14 @@
+{% if S_ZODIAC_ENABLED and postrow.S_ZODIAC_SIGN %}
+<dd class="profile-zodiac">
+	<strong>{{ lang('ZODIAC_SIGN') ~ lang('COLON') }}</strong>
+	{% if S_ZODIAC_HORO %}
+	<button type="button" class="zodiac-badge zodiac-el-{{ postrow.ZODIAC_ELEMENT }}" data-zodiac-sign="{{ postrow.ZODIAC_KEY }}" aria-haspopup="dialog" title="{{ lang('ZODIAC_HORO_OPEN', postrow.ZODIAC_NAME) }}{% if postrow.S_ZODIAC_AUTO %} ({{ lang('ZODIAC_FROM_BIRTHDAY') }}){% endif %}">
+		<img src="{{ postrow.ZODIAC_IMG }}" alt="" width="{{ ZODIAC_BADGE_SIZE }}" height="{{ ZODIAC_BADGE_SIZE }}" loading="lazy"><span>{{ postrow.ZODIAC_NAME }}</span>
+	</button>
+	{% else %}
+	<span class="zodiac-badge zodiac-el-{{ postrow.ZODIAC_ELEMENT }}">
+		<img src="{{ postrow.ZODIAC_IMG }}" alt="" width="{{ ZODIAC_BADGE_SIZE }}" height="{{ ZODIAC_BADGE_SIZE }}" loading="lazy"><span>{{ postrow.ZODIAC_NAME }}</span>
+	</span>
+	{% endif %}
+</dd>
+{% endif %}

@@ -1,0 +1,21 @@
+{% if S_ZODIAC_UCP %}
+{% include '@salvocortesiano_zodiacsigns/zodiac_picker.html' %}
+{% if S_ZODIAC_UCP_HORO %}
+<dl class="zodiac-field">
+	<dt><label>{{ lang('ZODIAC_HORO_TITLE') ~ lang('COLON') }}</label></dt>
+	<dd>
+		<div class="zodiac-card zodiac-el-{{ ZODIAC_UCP_ELEMENT }}">
+			<div class="zodiac-card-head"><img src="{{ ZODIAC_UCP_IMG }}" alt="" width="56" height="56"><h3>{{ ZODIAC_UCP_TITLE }}</h3></div>
+			{% for h in zodiac_ucp_horo %}
+			<section class="zodiac-card-period">
+				<h4>{{ h.PERIOD }}</h4>
+				<p>{{ h.TEXT }}</p>
+				{% if h.NOTE or h.SOURCE %}<p class="zodiac-card-meta">{{ h.NOTE }}{% if h.NOTE and h.SOURCE %} &ndash; {% endif %}{{ h.SOURCE }}</p>{% endif %}
+			</section>
+			{% endfor %}
+			{% if S_ZODIAC_UCP_HORO_EMPTY %}<p class="zodiac-card-empty">{{ lang('ZODIAC_HORO_NONE') }}</p>{% endif %}
+		</div>
+	</dd>
+</dl>
+{% endif %}
+{% endif %}

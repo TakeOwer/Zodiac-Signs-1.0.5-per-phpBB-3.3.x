@@ -1,0 +1,5 @@
+salvocortesiano_zodiacsigns_horoscope:
+    path: /zodiac/horoscope/{sign}
+    defaults: { _controller: salvocortesiano.zodiacsigns.controller:horoscope }
+    requirements:
+        sign: '[a-z]+'

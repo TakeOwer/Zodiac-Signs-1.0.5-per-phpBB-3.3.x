@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Aries">
+<title>Aries</title>
+<defs>
+<radialGradient id="bg" cx="50%" cy="38%" r="65%"><stop offset="0" stop-color="#2d3278"/><stop offset=".6" stop-color="#171b4a"/><stop offset="1" stop-color="#0b0d28"/></radialGradient>
+<radialGradient id="halo" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff7a45" stop-opacity=".32"/><stop offset="1" stop-color="#ff7a45" stop-opacity="0"/></radialGradient>
+<linearGradient id="gold" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#fff3c8"/><stop offset=".45" stop-color="#f2c75e"/><stop offset="1" stop-color="#c98f2e"/></linearGradient>
+<filter id="blur" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+</defs>
+<style>
+.orbit{transform-origin:100px 100px;animation:spin 36s linear infinite}
+.orbit2{transform-origin:100px 100px;animation:spin 60s linear infinite reverse}
+.glow{animation:breathe 4.8s ease-in-out infinite}
+.st{fill:#fff;animation:tw 3s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.95}}
+@keyframes tw{0%,100%{opacity:.2}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.orbit,.orbit2,.glow,.st{animation:none}.glow{opacity:.6}.st{opacity:.7}}
+</style>
+<circle cx="100" cy="100" r="97" fill="url(#bg)"/>
+<circle cx="100" cy="100" r="80" fill="url(#halo)"/>
+<g><circle class="st" cx="103.9" cy="151.1" r="1.2" style="animation-duration:3.1s;animation-delay:-2.7s"/><circle class="st" cx="52.6" cy="73.6" r="1.6" style="animation-duration:2.7s;animation-delay:-0.8s"/><circle class="st" cx="147.5" cy="98.7" r="1.6" style="animation-duration:3.9s;animation-delay:-1.2s"/><circle class="st" cx="103.6" cy="131.4" r="1.6" style="animation-duration:3.5s;animation-delay:-2.2s"/><circle class="st" cx="157.0" cy="124.2" r="0.8" style="animation-duration:2.3s;animation-delay:-0.9s"/><circle class="st" cx="131.6" cy="64.4" r="1.6" style="animation-duration:4.0s;animation-delay:-2.1s"/><circle class="st" cx="49.4" cy="139.3" r="1.6" style="animation-duration:2.5s;animation-delay:-2.9s"/><circle class="st" cx="82.9" cy="119.3" r="1.6" style="animation-duration:4.1s;animation-delay:-0.7s"/><circle class="st" cx="49.1" cy="121.6" r="1.2" style="animation-duration:3.9s;animation-delay:-1.3s"/><circle class="st" cx="54.7" cy="77.3" r="1.6" style="animation-duration:4.0s;animation-delay:-1.8s"/><circle class="st" cx="70.8" cy="35.9" r="1.2" style="animation-duration:3.5s;animation-delay:-3.0s"/><circle class="st" cx="134.8" cy="157.3" r="0.8" style="animation-duration:2.6s;animation-delay:-2.1s"/><circle class="st" cx="125.8" cy="54.1" r="1.2" style="animation-duration:3.2s;animation-delay:-0.4s"/><circle class="st" cx="69.0" cy="63.1" r="1.2" style="animation-duration:3.0s;animation-delay:-2.4s"/><circle class="st" cx="122.6" cy="131.4" r="1.6" style="animation-duration:2.3s;animation-delay:-2.6s"/><circle class="st" cx="80.3" cy="82.7" r="1.2" style="animation-duration:4.0s;animation-delay:-1.7s"/></g>
+<circle cx="100" cy="100" r="95" fill="none" stroke="#ff7a45" stroke-width="3"/>
+<g class="orbit"><circle cx="100" cy="100" r="87" fill="none" stroke="#ffb38a" stroke-opacity=".7" stroke-width="1.4" stroke-dasharray="1.5 6.5" stroke-linecap="round"/><circle cx="100" cy="13" r="3.4" fill="#ffb38a"/><circle cx="100" cy="13" r="7" fill="#ff7a45" opacity=".35"/></g>
+<g class="orbit2"><circle cx="100" cy="100" r="79" fill="none" stroke="#f2c75e" stroke-opacity=".3" stroke-width="1" stroke-dasharray="18 10 2 10"/></g>
+<g transform="translate(50 50)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g class="glow" stroke="#ff7a45" stroke-width="11" filter="url(#blur)"><path d="M50 86 V46"/><path d="M50 46 C50 24 40 15 30 17 C18 19 15 35 25 41"/><path d="M50 46 C50 24 60 15 70 17 C82 19 85 35 75 41"/></g>
+<g stroke="url(#gold)" stroke-width="6.5"><path d="M50 86 V46"/><path d="M50 46 C50 24 40 15 30 17 C18 19 15 35 25 41"/><path d="M50 46 C50 24 60 15 70 17 C82 19 85 35 75 41"/></g>
+</g>
+</svg>

@@ -1,0 +1,114 @@
+{% include 'overall_header.html' %}
+
+<style>
+.zs-horo-table td{vertical-align:top}
+.zs-horo-table img{width:28px;height:28px;vertical-align:middle;margin-right:6px}
+.zs-horo-cell small{display:block;color:#536482;margin-top:3px}
+.zs-state{display:inline-block;padding:1px 6px;border-radius:3px;font-size:.85em;font-weight:bold}
+.zs-state-ok{background:#d9f0d0;color:#2f6b1f}
+.zs-state-old{background:#fdf0c9;color:#7a5b00}
+.zs-state-none{background:#f5d6d6;color:#8c2020}
+.zs-state-manual{background:#dfe6f7;color:#2c4a8c}
+</style>
+
+<h1>{{ lang('ACP_ZODIAC_HOROSCOPE') }}</h1>
+{% include 'acp_zodiac_badges.html' %}
+<p>{{ lang('ACP_ZODIAC_HOROSCOPE_EXPLAIN') }}</p>
+
+{% if S_ERROR %}<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>{% endif %}
+{% if S_HORO_NO_SOURCE %}<div class="errorbox"><p>{{ lang('ACP_ZODIAC_NO_SOURCE', U_PROVIDERS) }}</p></div>{% endif %}
+
+<form id="zodiac_horoscope" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_HORO_SETTINGS') }}</legend>
+		<dl>
+			<dt><label>{{ lang('ACP_ZODIAC_HORO_PERIODS') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_HORO_PERIODS_EXPLAIN') }}</span></dt>
+			<dd><label><input type="checkbox" name="zodiac_horo_weekly" value="1"{% if ZODIAC_HORO_WEEKLY %} checked="checked"{% endif %}> {{ lang('ZODIAC_HORO_WEEKLY') }}</label><br>
+				<label><input type="checkbox" name="zodiac_horo_monthly" value="1"{% if ZODIAC_HORO_MONTHLY %} checked="checked"{% endif %}> {{ lang('ZODIAC_HORO_MONTHLY') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="zodiac_horo_source">{{ lang('ACP_ZODIAC_HORO_SOURCE') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_HORO_SOURCE_EXPLAIN') }}</span></dt>
+			<dd><select id="zodiac_horo_source" name="zodiac_horo_source">
+				<option value="free"{% if ZODIAC_HORO_SOURCE == 'free' %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_SOURCE_FREE') }}</option>
+				<option value="api"{% if ZODIAC_HORO_SOURCE == 'api' %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_SOURCE_API') }}</option>
+				<option value="both"{% if ZODIAC_HORO_SOURCE == 'both' %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_SOURCE_BOTH') }}</option>
+			</select>
+			<br><a href="{{ U_PROVIDERS }}">{{ lang('ACP_ZODIAC_MANAGE_PROVIDERS') }}</a></dd>
+		</dl>
+		<dl>
+			<dt><label for="zodiac_horo_display">{{ lang('ACP_ZODIAC_HORO_DISPLAY') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_HORO_DISPLAY_EXPLAIN') }}</span></dt>
+			<dd><select id="zodiac_horo_display" name="zodiac_horo_display">
+				<option value="user"{% if ZODIAC_HORO_DISPLAY == 'user' %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_DISPLAY_USER') }}</option>
+				<option value="it"{% if ZODIAC_HORO_DISPLAY == 'it' %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_LANG_IT') }}</option>
+				<option value="en"{% if ZODIAC_HORO_DISPLAY == 'en' %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_LANG_EN') }}</option>
+			</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="zodiac_horo_interval">{{ lang('ACP_ZODIAC_HORO_INTERVAL') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_HORO_INTERVAL_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="zodiac_horo_interval" name="zodiac_horo_interval" min="1" max="24" value="{{ ZODIAC_HORO_INTERVAL }}"> {{ lang('ACP_ZODIAC_HOURS') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="zodiac_horo_credit">{{ lang('ACP_ZODIAC_HORO_CREDIT') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_HORO_CREDIT_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" id="zodiac_horo_credit" name="zodiac_horo_credit" value="1"{% if ZODIAC_HORO_CREDIT %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="zodiac_horo_credit" value="0"{% if not ZODIAC_HORO_CREDIT %} checked="checked"{% endif %}> {{ lang('NO') }}</label></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" name="submit" value="{{ lang('SUBMIT') }}">
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<form id="zodiac_horoscope_fetch" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_HORO_UPDATE') }}</legend>
+		<p>{% if HORO_LAST_RUN %}{{ lang('ACP_ZODIAC_LAST_RUN', HORO_LAST_RUN) }}{% else %}{{ lang('ACP_ZODIAC_NEVER_RUN') }}{% endif %}</p>
+		{% if S_HORO_REPORT %}<p>{{ HORO_REPORT }}</p>{% if HORO_REPORT_ERRORS %}<p class="small">{{ HORO_REPORT_ERRORS }}</p>{% endif %}{% endif %}
+		<p>
+			<input class="button1" type="submit" name="fetch_now" value="{{ lang('ACP_ZODIAC_FETCH_NOW') }}">
+			<input class="button2" type="submit" name="fetch_force" value="{{ lang('ACP_ZODIAC_FETCH_FORCE') }}">
+		</p>
+		<p class="small">{{ lang('ACP_ZODIAC_FETCH_EXPLAIN') }}</p>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% if S_HORO_PERIODS %}
+<h2>{{ lang('ACP_ZODIAC_HORO_STATUS') }}</h2>
+<table class="table1 zs-horo-table">
+	<thead>
+		<tr>
+			<th>{{ lang('ZODIAC_SIGN') }}</th>
+			<th>{{ lang('ACP_ZODIAC_PERIOD') }}</th>
+			{% for l in langs %}<th>{{ l.NAME }}</th>{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+	{% for row in horo %}
+		<tr class="{% if loop.index is odd %}row1{% else %}row2{% endif %}">
+			<td><img src="{{ row.IMG }}" alt=""><strong>{{ row.SIGN }}</strong></td>
+			<td>{{ row.PERIOD }}</td>
+			{% for cell in row.cells %}
+			<td class="zs-horo-cell">
+				{% if cell.EXCERPT %}
+					{% if cell.S_MANUAL %}<span class="zs-state zs-state-manual">{{ lang('ACP_ZODIAC_MANUAL') }}</span>
+					{% elseif cell.S_CURRENT %}<span class="zs-state zs-state-ok">{{ lang('ACP_ZODIAC_STATE_OK') }}</span>
+					{% else %}<span class="zs-state zs-state-old">{{ lang('ACP_ZODIAC_STATE_OLD') }}</span>{% endif %}
+					{{ cell.EXCERPT }}
+					<small>{{ cell.DATE }}{% if cell.PROVIDER and not cell.S_MANUAL %} ({{ cell.PROVIDER }}){% endif %}</small>
+				{% else %}
+					<span class="zs-state zs-state-none">{{ lang('ACP_ZODIAC_STATE_NONE') }}</span>
+				{% endif %}
+				<small><a href="{{ cell.U_EDIT }}">{{ lang('ACP_ZODIAC_EDIT_TEXT') }}</a></small>
+			</td>
+			{% endfor %}
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+
+{% include 'acp_zodiac_footer.html' %}
+
+{% include 'overall_footer.html' %}

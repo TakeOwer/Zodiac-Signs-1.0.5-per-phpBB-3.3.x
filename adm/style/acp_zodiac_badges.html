@@ -1,0 +1,18 @@
+<style>
+.zs-badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 14px; }
+.zs-badge { display: inline-flex; border-radius: 3px; overflow: hidden; font: bold 11px/1 Verdana, "DejaVu Sans", sans-serif; color: #FFF; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); }
+.zs-badge span { padding: 6px 8px; }
+.zs-badge .zs-badge-label { background: #555; font-weight: normal; }
+.zs-badge .zs-badge-blue { background: #2F6CA3; }
+.zs-badge .zs-badge-green { background: #3C8B3C; }
+.zs-badge .zs-badge-red { background: #BC2A4D; }
+.zs-badge .zs-badge-orange { background: #C27A00; }
+.zs-badge .zs-badge-grey { background: #8A8A8A; }
+</style>
+<div class="zs-badges">
+	<span class="zs-badge" title="{% if ZS_EXT_MISMATCH %}{{ lang('ACP_ZODIAC_FOOTER_MISMATCH', ZS_DB_VERSION) }}{% else %}{{ lang('ACP_ZODIAC_BADGE_VERSION_TITLE') }}{% endif %}"><span class="zs-badge-label">{{ lang('ACP_ZODIAC_BADGE_VERSION') }}</span><span class="{% if ZS_EXT_MISMATCH %}zs-badge-orange{% else %}zs-badge-blue{% endif %}">{{ ZS_EXT_VERSION }}</span></span>
+	<span class="zs-badge" title="{% if S_ZS_PHPBB_OK %}{{ lang('ACP_ZODIAC_BADGE_COMPATIBLE') }}{% else %}{{ lang('ACP_ZODIAC_BADGE_INCOMPATIBLE') }}{% endif %}"><span class="zs-badge-label">phpBB</span><span class="{% if S_ZS_PHPBB_OK %}zs-badge-green{% else %}zs-badge-red{% endif %}">{{ ZS_PHPBB_VERSION }}</span></span>
+	<span class="zs-badge" title="{% if S_ZS_PHP_OK %}{{ lang('ACP_ZODIAC_BADGE_COMPATIBLE') }}{% else %}{{ lang('ACP_ZODIAC_BADGE_INCOMPATIBLE') }}{% endif %}"><span class="zs-badge-label">PHP</span><span class="{% if S_ZS_PHP_OK %}zs-badge-green{% else %}zs-badge-red{% endif %}">{{ ZS_PHP_VERSION }}</span></span>
+	<span class="zs-badge"><span class="zs-badge-label">{{ lang('ACP_ZODIAC_BADGE_LICENSE') }}</span><span class="zs-badge-grey">{{ ZS_LICENSE }}</span></span>
+</div>
+{% if ZS_EXT_MISMATCH %}<div class="errorbox"><p>{{ lang('ACP_ZODIAC_BADGE_MISMATCH_BOX', ZS_EXT_VERSION, ZS_DB_VERSION) }}</p></div>{% endif %}

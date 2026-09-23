@@ -1,0 +1,26 @@
+{% include 'overall_header.html' %}
+
+<a href="{{ U_BACK }}" style="float: {{ S_CONTENT_FLOW_END }};">&laquo; {{ lang('BACK') }}</a>
+
+<h1><img src="{{ EDIT_IMG }}" alt="" width="40" height="40" style="vertical-align: middle;"> {{ EDIT_TITLE }}</h1>
+{% include 'acp_zodiac_badges.html' %}
+<p>{{ lang('ACP_ZODIAC_EDIT_EXPLAIN') }}</p>
+
+{% if S_ERROR %}<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>{% endif %}
+
+<form id="zodiac_horo_edit" method="post" action="{{ U_EDIT_POST }}">
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_TEXT') }}</legend>
+		<textarea name="horo_text" rows="12" cols="80" style="width: 100%;">{{ EDIT_TEXT }}</textarea>
+		{% if S_MANUAL %}<p class="small">{{ lang('ACP_ZODIAC_IS_MANUAL') }}</p>{% endif %}
+	</fieldset>
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" name="save" value="{{ lang('ACP_ZODIAC_SAVE_TEXT') }}">
+		{% if S_MANUAL %}<input class="button2" type="submit" name="release" value="{{ lang('ACP_ZODIAC_RELEASE') }}">{% endif %}
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% include 'acp_zodiac_footer.html' %}
+
+{% include 'overall_footer.html' %}

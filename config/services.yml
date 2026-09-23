@@ -1,0 +1,72 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+    salvocortesiano.zodiacsigns.zodiac:
+        class: salvocortesiano\zodiacsigns\core\zodiac
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@language'
+            - '%core.root_path%'
+
+    salvocortesiano.zodiacsigns.horoscope:
+        class: salvocortesiano\zodiacsigns\core\horoscope
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@dbal.conn'
+            - '@user'
+            - '%salvocortesiano.zodiacsigns.tables.providers%'
+            - '%salvocortesiano.zodiacsigns.tables.horoscopes%'
+
+    salvocortesiano.zodiacsigns.listener:
+        class: salvocortesiano\zodiacsigns\event\main_listener
+        arguments:
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@language'
+            - '@controller.helper'
+            - '@salvocortesiano.zodiacsigns.zodiac'
+            - '@salvocortesiano.zodiacsigns.horoscope'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
+
+    salvocortesiano.zodiacsigns.controller:
+        class: salvocortesiano\zodiacsigns\controller\main
+        arguments:
+            - '@config'
+            - '@language'
+            - '@salvocortesiano.zodiacsigns.zodiac'
+            - '@salvocortesiano.zodiacsigns.horoscope'
+
+    salvocortesiano.zodiacsigns.cron.horoscope:
+        class: salvocortesiano\zodiacsigns\cron\task\horoscope_update
+        arguments:
+            - '@config'
+            - '@log'
+            - '@salvocortesiano.zodiacsigns.horoscope'
+        calls:
+            - [set_name, [salvocortesiano.zodiacsigns.cron.horoscope]]
+        tags:
+            - { name: cron.task }
+
+    salvocortesiano.zodiacsigns.diagnostics:
+        class: salvocortesiano\zodiacsigns\core\diagnostics
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@dbal.conn'
+            - '@dbal.tools'
+            - '@language'
+            - '@cron.manager'
+            - '@controller.helper'
+            - '@salvocortesiano.zodiacsigns.zodiac'
+            - '@salvocortesiano.zodiacsigns.horoscope'
+            - '@salvocortesiano.zodiacsigns.controller'
+            - '%core.root_path%'
+            - '%salvocortesiano.zodiacsigns.tables.providers%'
+            - '%salvocortesiano.zodiacsigns.tables.horoscopes%'

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Aquarius">
+<title>Aquarius</title>
+<defs>
+<radialGradient id="bg" cx="50%" cy="38%" r="65%"><stop offset="0" stop-color="#2d3278"/><stop offset=".6" stop-color="#171b4a"/><stop offset="1" stop-color="#0b0d28"/></radialGradient>
+<radialGradient id="halo" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#7cc4f2" stop-opacity=".32"/><stop offset="1" stop-color="#7cc4f2" stop-opacity="0"/></radialGradient>
+<linearGradient id="gold" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#fff3c8"/><stop offset=".45" stop-color="#f2c75e"/><stop offset="1" stop-color="#c98f2e"/></linearGradient>
+<filter id="blur" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+</defs>
+<style>
+.orbit{transform-origin:100px 100px;animation:spin 36s linear infinite}
+.orbit2{transform-origin:100px 100px;animation:spin 60s linear infinite reverse}
+.glow{animation:breathe 4.8s ease-in-out infinite}
+.st{fill:#fff;animation:tw 3s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.95}}
+@keyframes tw{0%,100%{opacity:.2}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.orbit,.orbit2,.glow,.st{animation:none}.glow{opacity:.6}.st{opacity:.7}}
+</style>
+<circle cx="100" cy="100" r="97" fill="url(#bg)"/>
+<circle cx="100" cy="100" r="80" fill="url(#halo)"/>
+<g><circle class="st" cx="116.9" cy="32.7" r="1" style="animation-duration:2.8s;animation-delay:-0.3s"/><circle class="st" cx="75.7" cy="134.8" r="0.8" style="animation-duration:2.6s;animation-delay:-2.9s"/><circle class="st" cx="139.5" cy="53.9" r="1.2" style="animation-duration:2.7s;animation-delay:-0.0s"/><circle class="st" cx="136.4" cy="122.8" r="1.6" style="animation-duration:3.9s;animation-delay:-1.4s"/><circle class="st" cx="66.9" cy="89.6" r="1.2" style="animation-duration:2.2s;animation-delay:-2.8s"/><circle class="st" cx="120.1" cy="68.2" r="1" style="animation-duration:3.9s;animation-delay:-2.7s"/><circle class="st" cx="56.5" cy="58.7" r="0.8" style="animation-duration:3.3s;animation-delay:-3.0s"/><circle class="st" cx="42.7" cy="115.1" r="1.2" style="animation-duration:4.0s;animation-delay:-2.1s"/><circle class="st" cx="142.7" cy="84.8" r="1.6" style="animation-duration:3.6s;animation-delay:-0.9s"/><circle class="st" cx="72.0" cy="162.2" r="1" style="animation-duration:3.6s;animation-delay:-2.2s"/><circle class="st" cx="53.6" cy="49.6" r="1" style="animation-duration:2.4s;animation-delay:-2.3s"/><circle class="st" cx="128.9" cy="93.0" r="1.2" style="animation-duration:3.5s;animation-delay:-0.7s"/><circle class="st" cx="94.5" cy="50.6" r="1.2" style="animation-duration:3.4s;animation-delay:-0.4s"/><circle class="st" cx="68.1" cy="89.5" r="1.2" style="animation-duration:2.9s;animation-delay:-1.0s"/><circle class="st" cx="81.9" cy="131.5" r="1.2" style="animation-duration:2.2s;animation-delay:-0.2s"/><circle class="st" cx="41.3" cy="127.0" r="1.2" style="animation-duration:2.3s;animation-delay:-2.2s"/></g>
+<circle cx="100" cy="100" r="95" fill="none" stroke="#7cc4f2" stroke-width="3"/>
+<g class="orbit"><circle cx="100" cy="100" r="87" fill="none" stroke="#c4e6fb" stroke-opacity=".7" stroke-width="1.4" stroke-dasharray="1.5 6.5" stroke-linecap="round"/><circle cx="100" cy="13" r="3.4" fill="#c4e6fb"/><circle cx="100" cy="13" r="7" fill="#7cc4f2" opacity=".35"/></g>
+<g class="orbit2"><circle cx="100" cy="100" r="79" fill="none" stroke="#f2c75e" stroke-opacity=".3" stroke-width="1" stroke-dasharray="18 10 2 10"/></g>
+<g transform="translate(50 50)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g class="glow" stroke="#7cc4f2" stroke-width="11" filter="url(#blur)"><path d="M16 44 L33 31 L50 44 L67 31 L84 44"/><path d="M16 71 L33 58 L50 71 L67 58 L84 71"/></g>
+<g stroke="url(#gold)" stroke-width="6.5"><path d="M16 44 L33 31 L50 44 L67 31 L84 44"/><path d="M16 71 L33 58 L50 71 L67 58 L84 71"/></g>
+</g>
+</svg>

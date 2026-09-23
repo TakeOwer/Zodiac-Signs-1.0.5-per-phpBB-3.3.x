@@ -1,0 +1,18 @@
+{% if S_ZODIAC_REGISTER %}
+<dl>
+	<dt><label for="zodiac_bday_day">{{ lang('ZODIAC_BIRTH_HELPER') ~ lang('COLON') }}</label><br><span>{{ lang('ZODIAC_BIRTH_HELPER_EXPLAIN') }}</span></dt>
+	<dd>
+		<label for="zodiac_bday_day">{{ lang('ZODIAC_DAY') ~ lang('COLON') }}</label>
+		<select name="zodiac_bday_day" id="zodiac_bday_day">
+			<option value="0">--</option>
+			{% for d in zodiac_days %}<option value="{{ d.VALUE }}"{% if d.S_SELECTED %} selected="selected"{% endif %}>{{ d.VALUE }}</option>{% endfor %}
+		</select>
+		<label for="zodiac_bday_month">{{ lang('ZODIAC_MONTH') ~ lang('COLON') }}</label>
+		<select name="zodiac_bday_month" id="zodiac_bday_month">
+			<option value="0">--</option>
+			{% for m in zodiac_months %}<option value="{{ m.VALUE }}"{% if m.S_SELECTED %} selected="selected"{% endif %}>{{ m.NAME }}</option>{% endfor %}
+		</select>
+	</dd>
+</dl>
+{% include '@salvocortesiano_zodiacsigns/zodiac_picker.html' %}
+{% endif %}

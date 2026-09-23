@@ -1,0 +1,99 @@
+{% include 'overall_header.html' %}
+
+<style>
+.zs-diag-summary{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.zs-diag-summary span{padding:6px 12px;border-radius:6px;font-weight:bold}
+.zs-s-ok{background:#d9f0d0;color:#2f6b1f}
+.zs-s-warn{background:#fdf0c9;color:#7a5b00}
+.zs-s-error{background:#f5d6d6;color:#8c2020}
+.zs-s-info{background:#e3e8f2;color:#3f4f68}
+.zs-diag h2{display:flex;align-items:center;gap:8px}
+.zs-diag h2 .zs-dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.zs-dot.zs-s-ok{background:#4c9a2a}.zs-dot.zs-s-warn{background:#d9a400}.zs-dot.zs-s-error{background:#c0392b}
+.zs-diag table td{vertical-align:top}
+.zs-diag td.zs-status{width:90px;white-space:nowrap}
+.zs-diag td.zs-status span{display:inline-block;padding:1px 7px;border-radius:3px;font-size:.9em;font-weight:bold}
+.zs-diag td.zs-label{width:30%;font-weight:bold}
+.zs-diag td.zs-detail{word-break:break-word}
+.zs-diag-text{width:100%;font-family:monospace;font-size:.95em}
+</style>
+
+<h1>{{ lang('ACP_ZODIAC_DIAGNOSTICS') }}</h1>
+{% include 'acp_zodiac_badges.html' %}
+<p>{{ lang('ACP_ZODIAC_DIAGNOSTICS_EXPLAIN') }}</p>
+
+{% if S_ERROR %}<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>{% endif %}
+{% if DIAG_CRON_MSG %}<div class="successbox"><p>{{ DIAG_CRON_MSG }}</p></div>{% endif %}
+
+<form id="zodiac_diag" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_DIAG_RUN_TITLE') }}</legend>
+		<dl>
+			<dt><label for="diag_live">{{ lang('ACP_ZODIAC_DIAG_LIVE_OPT') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_DIAG_LIVE_OPT_EXPLAIN') }}</span></dt>
+			<dd><label><input type="checkbox" id="diag_live" name="diag_live" value="1"{% if DIAG_LIVE %} checked="checked"{% endif %}> {{ lang('YES') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="diag_full">{{ lang('ACP_ZODIAC_DIAG_FULL_OPT') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_DIAG_FULL_OPT_EXPLAIN') }}</span></dt>
+			<dd><label><input type="checkbox" id="diag_full" name="diag_full" value="1"{% if DIAG_FULL %} checked="checked"{% endif %}> {{ lang('YES') }}</label></dd>
+		</dl>
+		<p class="submit-buttons">
+			<input class="button1" type="submit" name="run" value="{{ lang('ACP_ZODIAC_DIAG_RUN') }}">
+			<input class="button2" type="submit" name="run_cron" value="{{ lang('ACP_ZODIAC_DIAG_RUN_CRON') }}">
+		</p>
+		<p class="small">{{ lang('ACP_ZODIAC_DIAG_RUN_CRON_EXPLAIN') }}</p>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<p>{{ lang('ACP_ZODIAC_DIAG_DONE_AT', DIAG_TIME) }}{% if DIAG_LIVE %} {{ lang('ACP_ZODIAC_DIAG_WITH_LIVE') }}{% endif %}</p>
+<div class="zs-diag-summary">
+	<span class="zs-s-ok">{{ lang('ACP_ZODIAC_DIAG_OK') }}: {{ DIAG_OK }}</span>
+	<span class="zs-s-warn">{{ lang('ACP_ZODIAC_DIAG_WARN') }}: {{ DIAG_WARN }}</span>
+	<span class="zs-s-error">{{ lang('ACP_ZODIAC_DIAG_ERROR') }}: {{ DIAG_ERROR }}</span>
+	<span class="zs-s-info">{{ lang('ACP_ZODIAC_DIAG_INFO') }}: {{ DIAG_INFO }}</span>
+</div>
+
+<div class="zs-diag">
+{% for section in diag %}
+	<h2><span class="zs-dot zs-s-{{ section.STATUS }}"></span>{{ section.TITLE }}</h2>
+	<table class="table1">
+		<tbody>
+		{% for row in section.rows %}
+			<tr class="{% if loop.index is odd %}row1{% else %}row2{% endif %}">
+				<td class="zs-status"><span class="zs-s-{{ row.STATUS }}">{{ row.STATUS_LABEL }}</span></td>
+				<td class="zs-label">{{ row.LABEL }}</td>
+				<td class="zs-detail">{{ row.DETAIL }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endfor %}
+</div>
+
+<fieldset>
+	<legend>{{ lang('ACP_ZODIAC_DIAG_REPORT') }}</legend>
+	<p class="small">{{ lang('ACP_ZODIAC_DIAG_REPORT_EXPLAIN') }}</p>
+	<textarea class="zs-diag-text" id="zs_diag_text" rows="12" readonly="readonly">{{ DIAG_TEXT }}</textarea>
+	<p><input class="button2" type="button" id="zs_diag_copy" value="{{ lang('ACP_ZODIAC_DIAG_COPY') }}" data-done="{{ lang('ACP_ZODIAC_DIAG_COPIED')|e('html_attr') }}"></p>
+</fieldset>
+
+<script>
+(function () {
+	var live = document.getElementById('diag_live'), full = document.getElementById('diag_full');
+	function sync() { full.disabled = !live.checked; if (!live.checked) { full.checked = false; } }
+	live.addEventListener('change', sync);
+	sync();
+
+	var btn = document.getElementById('zs_diag_copy'), area = document.getElementById('zs_diag_text');
+	btn.addEventListener('click', function () {
+		area.select();
+		var done = function () { btn.value = btn.dataset.done; };
+		if (navigator.clipboard) { navigator.clipboard.writeText(area.value).then(done, function () { document.execCommand('copy'); done(); }); }
+		else { document.execCommand('copy'); done(); }
+	});
+})();
+</script>
+
+{% include 'acp_zodiac_footer.html' %}
+
+{% include 'overall_footer.html' %}

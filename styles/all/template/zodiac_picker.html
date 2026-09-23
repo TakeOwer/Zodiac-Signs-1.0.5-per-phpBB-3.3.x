@@ -1,0 +1,27 @@
+<dl class="zodiac-field">
+	<dt>
+		<label>{{ lang('ZODIAC_SIGN') ~ lang('COLON') }}{% if S_ZODIAC_REQUIRED %} *{% endif %}</label><br>
+		<span>{% if S_ZODIAC_REQUIRED %}{{ lang('ZODIAC_SIGN_EXPLAIN_REQUIRED') }}{% else %}{{ lang('ZODIAC_SIGN_EXPLAIN') }}{% endif %}</span>
+	</dt>
+	<dd>
+		<div class="zodiac-picker" role="radiogroup" aria-label="{{ lang('ZODIAC_SIGN') }}"
+			data-day-field="{{ ZODIAC_DAY_FIELD }}" data-month-field="{{ ZODIAC_MONTH_FIELD }}"
+			data-msg-auto="{{ lang('ZODIAC_HINT_AUTO')|e('html_attr') }}" data-msg-mismatch="{{ lang('ZODIAC_HINT_MISMATCH')|e('html_attr') }}">
+			{% for sign in zodiac_signs %}
+			<label class="zodiac-option zodiac-el-{{ sign.ELEMENT }}{% if sign.S_SELECTED %} is-selected{% endif %}" title="{{ sign.NAME }}, {{ sign.RANGE }} ({{ sign.ELEMENT_NAME }})">
+				<input type="radio" name="zodiac_sign" value="{{ sign.ID }}" data-name="{{ sign.NAME }}"{% if sign.S_SELECTED %} checked="checked"{% endif %}>
+				<img src="{{ sign.IMG }}" alt="" width="60" height="60" loading="lazy">
+				<span class="zodiac-option-name">{{ sign.NAME }}</span>
+				<span class="zodiac-option-range">{{ sign.RANGE }}</span>
+			</label>
+			{% endfor %}
+			{% if not S_ZODIAC_REQUIRED %}
+			<label class="zodiac-option zodiac-option-none{% if S_ZODIAC_NONE %} is-selected{% endif %}">
+				<input type="radio" name="zodiac_sign" value="0" data-name=""{% if S_ZODIAC_NONE %} checked="checked"{% endif %}>
+				<span class="zodiac-option-name">{{ lang('ZODIAC_NONE') }}</span>
+			</label>
+			{% endif %}
+		</div>
+		<p class="zodiac-hint" data-zodiac-hint hidden></p>
+	</dd>
+</dl>

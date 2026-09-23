@@ -1,0 +1,143 @@
+{% include 'overall_header.html' %}
+
+<style>
+.zs-prov-off td{opacity:.55}
+.zs-tag{display:inline-block;padding:1px 6px;border-radius:3px;font-size:.85em;background:#e6ebf2;color:#3f4f68;margin-left:4px}
+.zs-ok{color:#2f6b1f;font-weight:bold}
+.zs-ko{color:#8c2020}
+.zs-help code{font-size:1em}
+</style>
+
+{% if S_PROVIDER_FORM %}
+
+<a href="{{ U_BACK }}" style="float: {{ S_CONTENT_FLOW_END }};">&laquo; {{ lang('BACK') }}</a>
+<h1>{% if S_EDIT %}{{ lang('ACP_ZODIAC_PROVIDER_EDIT') }}{% else %}{{ lang('ACP_ZODIAC_PROVIDER_ADD') }}{% endif %}</h1>
+{% include 'acp_zodiac_badges.html' %}
+<p>{{ lang('ACP_ZODIAC_PROVIDER_FORM_EXPLAIN') }}</p>
+{% if S_BUILTIN %}<p><strong>{{ lang('ACP_ZODIAC_PROVIDER_BUILTIN_NOTE') }}</strong></p>{% endif %}
+
+{% if S_ERROR %}<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>{% endif %}
+
+<form id="zodiac_provider" method="post" action="{{ U_FORM }}" autocomplete="off">
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_PROVIDER') }}</legend>
+		<dl>
+			<dt><label for="provider_name">{{ lang('ACP_ZODIAC_P_NAME') ~ lang('COLON') }}</label></dt>
+			<dd><input type="text" class="text medium" id="provider_name" name="provider_name" maxlength="100" value="{{ P_NAME }}"></dd>
+		</dl>
+		<dl>
+			<dt><label for="provider_lang">{{ lang('ACP_ZODIAC_P_LANG') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_P_LANG_EXPLAIN') }}</span></dt>
+			<dd><select id="provider_lang" name="provider_lang">
+				<option value="it"{% if P_LANG == 'it' %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_LANG_IT') }}</option>
+				<option value="en"{% if P_LANG == 'en' %} selected="selected"{% endif %}>{{ lang('ACP_ZODIAC_LANG_EN') }}</option>
+			</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="provider_url_weekly">{{ lang('ACP_ZODIAC_P_URL_WEEKLY') ~ lang('COLON') }}</label></dt>
+			<dd><input type="url" class="text full" id="provider_url_weekly" name="provider_url_weekly" value="{{ P_URL_WEEKLY }}" placeholder="https://api.example.com/horoscope?sign={sign}&amp;period=weekly"></dd>
+		</dl>
+		<dl>
+			<dt><label for="provider_url_monthly">{{ lang('ACP_ZODIAC_P_URL_MONTHLY') ~ lang('COLON') }}</label></dt>
+			<dd><input type="url" class="text full" id="provider_url_monthly" name="provider_url_monthly" value="{{ P_URL_MONTHLY }}"></dd>
+		</dl>
+		<div class="zs-help"><p class="small">{{ lang('ACP_ZODIAC_P_PLACEHOLDERS') }}</p></div>
+		<dl>
+			<dt><label for="provider_sign_format">{{ lang('ACP_ZODIAC_P_FORMAT') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_P_FORMAT_EXPLAIN') }}</span></dt>
+			<dd><select id="provider_sign_format" name="provider_sign_format">
+				{% for f in formats %}<option value="{{ f.VALUE }}"{% if f.S_SELECTED %} selected="selected"{% endif %}>{{ f.NAME }}</option>{% endfor %}
+			</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="provider_json_path">{{ lang('ACP_ZODIAC_P_JSON') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_P_JSON_EXPLAIN') }}</span></dt>
+			<dd><input type="text" class="text medium" id="provider_json_path" name="provider_json_path" maxlength="255" value="{{ P_JSON_PATH }}" placeholder="data.horoscope"></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_P_AUTH') }}</legend>
+		<p class="small">{{ lang('ACP_ZODIAC_P_AUTH_EXPLAIN') }}</p>
+		<dl>
+			<dt><label for="provider_auth_header">{{ lang('ACP_ZODIAC_P_AUTH_HEADER') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_P_AUTH_HEADER_EXPLAIN') }}</span></dt>
+			<dd><input type="text" class="text medium" id="provider_auth_header" name="provider_auth_header" maxlength="100" value="{{ P_AUTH_HEADER }}" placeholder="X-RapidAPI-Key"></dd>
+		</dl>
+		<dl>
+			<dt><label for="provider_auth_value">{{ lang('ACP_ZODIAC_P_AUTH_VALUE') ~ lang('COLON') }}</label><br><span>{% if S_HAS_KEY %}{{ lang('ACP_ZODIAC_P_KEY_SAVED') }}{% else %}{{ lang('ACP_ZODIAC_P_KEY_NONE') }}{% endif %}</span></dt>
+			<dd><input type="password" class="text medium" id="provider_auth_value" name="provider_auth_value" value="" autocomplete="new-password">
+				{% if S_HAS_KEY %}<br><label><input type="checkbox" name="provider_auth_clear" value="1"> {{ lang('ACP_ZODIAC_P_KEY_CLEAR') }}</label>{% endif %}</dd>
+		</dl>
+		<dl>
+			<dt><label for="provider_headers">{{ lang('ACP_ZODIAC_P_HEADERS') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_P_HEADERS_EXPLAIN') }}</span></dt>
+			<dd><textarea id="provider_headers" name="provider_headers" rows="3" cols="60" placeholder="X-RapidAPI-Host: example.p.rapidapi.com">{{ P_HEADERS }}</textarea></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_P_ORDER') }}</legend>
+		<dl>
+			<dt><label for="provider_priority">{{ lang('ACP_ZODIAC_P_PRIORITY') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_P_PRIORITY_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="provider_priority" name="provider_priority" min="0" max="999" value="{{ P_PRIORITY }}"></dd>
+		</dl>
+		<dl>
+			<dt><label for="provider_enabled">{{ lang('ACP_ZODIAC_P_ENABLED') ~ lang('COLON') }}</label></dt>
+			<dd><label><input type="radio" class="radio" id="provider_enabled" name="provider_enabled" value="1"{% if P_ENABLED %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="provider_enabled" value="0"{% if not P_ENABLED %} checked="checked"{% endif %}> {{ lang('NO') }}</label></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" name="submit" value="{{ lang('SUBMIT') }}">
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% else %}
+
+<h1>{{ lang('ACP_ZODIAC_PROVIDERS') }}</h1>
+{% include 'acp_zodiac_badges.html' %}
+<p>{{ lang('ACP_ZODIAC_PROVIDERS_EXPLAIN') }}</p>
+<p>{{ lang('ACP_ZODIAC_CURRENT_MODE', ZODIAC_SOURCE_MODE, U_HOROSCOPE) }}</p>
+
+<table class="table1">
+	<thead>
+		<tr>
+			<th>{{ lang('ACP_ZODIAC_P_NAME') }}</th>
+			<th>{{ lang('ACP_ZODIAC_P_LANG') }}</th>
+			<th>{{ lang('ACP_ZODIAC_P_PRIORITY') }}</th>
+			<th>{{ lang('ACP_ZODIAC_P_LAST_CHECK') }}</th>
+			<th>{{ lang('ACTION') }}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for p in providers %}
+		<tr class="{% if loop.index is odd %}row1{% else %}row2{% endif %}{% if not p.S_IN_USE %} zs-prov-off{% endif %}">
+			<td><strong>{{ p.NAME }}</strong>
+				{% if p.S_BUILTIN %}<span class="zs-tag">{{ lang('ACP_ZODIAC_TAG_FREE') }}</span>{% else %}<span class="zs-tag">{{ lang('ACP_ZODIAC_TAG_API') }}</span>{% endif %}
+				{% if p.S_HAS_KEY %}<span class="zs-tag">{{ lang('ACP_ZODIAC_TAG_KEY') }}</span>{% endif %}
+				{% if not p.S_ENABLED %}<span class="zs-tag">{{ lang('ACP_ZODIAC_TAG_OFF') }}</span>{% elseif not p.S_IN_USE %}<span class="zs-tag">{{ lang('ACP_ZODIAC_TAG_UNUSED') }}</span>{% endif %}</td>
+			<td>{{ p.LANG }}</td>
+			<td>{{ p.PRIORITY }}</td>
+			<td>{% if p.CHECKED %}<span class="{% if p.S_STATUS_OK %}zs-ok{% else %}zs-ko{% endif %}">{{ p.STATUS }}</span><br><span class="small">{{ p.CHECKED }}</span>{% else %}&ndash;{% endif %}</td>
+			<td>
+				<a href="{{ p.U_TEST }}">{{ lang('ACP_ZODIAC_TEST') }}</a> |
+				<a href="{{ p.U_TOGGLE }}">{% if p.S_ENABLED %}{{ lang('DISABLE') }}{% else %}{{ lang('ENABLE') }}{% endif %}</a> |
+				<a href="{{ p.U_EDIT }}">{{ lang('EDIT') }}</a>
+				{% if p.U_DELETE %} | <a href="{{ p.U_DELETE }}">{{ lang('DELETE') }}</a>{% endif %}
+			</td>
+		</tr>
+	{% else %}
+		<tr class="row1"><td colspan="5">{{ lang('ACP_ZODIAC_NO_PROVIDERS') }}</td></tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<form method="post" action="{{ U_ADD }}">
+	<fieldset class="quick">
+		<input class="button2" type="submit" value="{{ lang('ACP_ZODIAC_PROVIDER_ADD') }}">
+	</fieldset>
+</form>
+
+{% endif %}
+
+{% include 'acp_zodiac_footer.html' %}
+
+{% include 'overall_footer.html' %}

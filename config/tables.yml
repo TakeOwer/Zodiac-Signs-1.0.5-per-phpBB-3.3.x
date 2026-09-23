@@ -1,0 +1,3 @@
+parameters:
+    salvocortesiano.zodiacsigns.tables.providers: '%core.table_prefix%zodiac_providers'
+    salvocortesiano.zodiacsigns.tables.horoscopes: '%core.table_prefix%zodiac_horoscopes'

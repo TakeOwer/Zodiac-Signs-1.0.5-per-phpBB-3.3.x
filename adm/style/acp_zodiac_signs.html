@@ -1,0 +1,69 @@
+{% include 'overall_header.html' %}
+
+<style>
+.zs-acp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:10px 0}
+.zs-acp-card{border:1px solid #ccd6e0;border-radius:8px;padding:10px;background:#fff;display:flex;flex-direction:column;gap:6px}
+.zs-acp-card h3{margin:0;font-size:1.2em;border:0;padding:0}
+.zs-acp-previews{display:flex;gap:12px;align-items:flex-end}
+.zs-acp-previews figure{margin:0;text-align:center;font-size:.9em;color:#536482}
+.zs-acp-previews img{display:block;width:88px;height:88px;object-fit:contain;margin:0 auto 3px}
+.zs-acp-previews .zs-default img{width:48px;height:48px;opacity:.75}
+.zs-acp-card input[type=file]{max-width:100%}
+.zs-acp-new{display:none}
+.zs-acp-new.is-on{display:block}
+</style>
+
+<h1>{{ lang('ACP_ZODIAC_SIGNS') }}</h1>
+{% include 'acp_zodiac_badges.html' %}
+<p>{{ lang('ACP_ZODIAC_SIGNS_EXPLAIN') }}</p>
+
+{% if not S_ZODIAC_DIR_OK %}<div class="errorbox"><p>{{ lang('ACP_ZODIAC_DIR_NOT_WRITABLE', ZODIAC_UPLOAD_DIR) }}</p></div>{% endif %}
+{% if S_ERROR %}<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>{% endif %}
+
+<form id="zodiac_signs" method="post" action="{{ U_ACTION }}" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{{ lang('ACP_ZODIAC_UPLOAD') }}</legend>
+		<dl>
+			<dt><label for="zodiac_img_maxsize">{{ lang('ACP_ZODIAC_IMG_MAXSIZE') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_ZODIAC_IMG_MAXSIZE_EXPLAIN', S_ZODIAC_PHP_LIMIT) }}</span></dt>
+			<dd><input type="number" id="zodiac_img_maxsize" name="zodiac_img_maxsize" min="16" max="4096" value="{{ ZODIAC_IMG_MAXSIZE }}"> KB</dd>
+		</dl>
+
+		<div class="zs-acp-grid">
+		{% for sign in signs %}
+			<div class="zs-acp-card">
+				<h3>{{ sign.NAME }} <small>({{ sign.RANGE }})</small></h3>
+				<div class="zs-acp-previews">
+					<figure><img src="{{ sign.IMG }}" alt="" data-zs-current="{{ sign.KEY }}">{% if sign.S_CUSTOM %}{{ lang('ACP_ZODIAC_IMG_CUSTOM') }}{% else %}{{ lang('ACP_ZODIAC_IMG_DEFAULT') }}{% endif %}</figure>
+					{% if sign.S_CUSTOM %}<figure class="zs-default"><img src="{{ sign.DEFAULT_IMG }}" alt="">{{ lang('ACP_ZODIAC_IMG_DEFAULT') }}</figure>{% endif %}
+					<figure class="zs-acp-new" data-zs-new="{{ sign.KEY }}"><img src="data:," alt="">{{ lang('ACP_ZODIAC_IMG_NEW') }}</figure>
+				</div>
+				<input type="file" name="img_{{ sign.KEY }}" accept=".gif,.jpg,.jpeg,.png,image/gif,image/jpeg,image/png" data-zs-file="{{ sign.KEY }}">
+				{% if sign.S_CUSTOM %}<label><input type="checkbox" name="reset_{{ sign.KEY }}" value="1"> {{ lang('ACP_ZODIAC_IMG_RESET') }}</label>{% endif %}
+			</div>
+		{% endfor %}
+		</div>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('ACP_ZODIAC_SAVE_IMAGES') }}">
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<script>
+// Preview of the file chosen, before it is uploaded
+document.querySelectorAll('[data-zs-file]').forEach(function (input) {
+	input.addEventListener('change', function () {
+		var box = document.querySelector('[data-zs-new="' + input.dataset.zsFile + '"]');
+		if (!box) { return; }
+		var file = input.files && input.files[0];
+		if (!file) { box.classList.remove('is-on'); return; }
+		box.querySelector('img').src = URL.createObjectURL(file);
+		box.classList.add('is-on');
+	});
+});
+</script>
+
+{% include 'acp_zodiac_footer.html' %}
+
+{% include 'overall_footer.html' %}

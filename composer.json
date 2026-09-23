@@ -1,0 +1,27 @@
+{
+	"name": "salvocortesiano/zodiacsigns",
+	"type": "phpbb-extension",
+	"description": "Lets members choose their zodiac sign (auto-detected from the birthday), shows animated sign badges and weekly/monthly horoscopes fetched by cron from free or custom APIs.",
+	"homepage": "https://netshadows.de/ombra",
+	"version": "1.0.5",
+	"time": "2026-09-22",
+	"license": "GPL-2.0-only",
+	"authors": [
+		{
+			"name": "Salvo Cortesiano",
+			"email": "info@netshadows.de",
+			"homepage": "https://netshadows.de",
+			"role": "Lead Developer"
+		}
+	],
+	"require": {
+		"php": ">=8.0.0",
+		"composer/installers": "~1.0"
+	},
+	"extra": {
+		"display-name": "Zodiac Signs",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.3.0,<3.4.0@dev"
+		}
+	}
+}

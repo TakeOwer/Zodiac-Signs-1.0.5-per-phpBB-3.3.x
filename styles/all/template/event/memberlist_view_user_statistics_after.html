@@ -1,0 +1,7 @@
+{% if MEMBER_S_ZODIAC_SIGN %}
+<dt>{{ lang('ZODIAC_SIGN') ~ lang('COLON') }}</dt>
+<dd><span class="zodiac-badge zodiac-el-{{ MEMBER_ZODIAC_ELEMENT }}"><img src="{{ MEMBER_ZODIAC_IMG }}" alt="" width="{{ ZODIAC_BADGE_SIZE }}" height="{{ ZODIAC_BADGE_SIZE }}"><span>{{ MEMBER_ZODIAC_NAME }}</span></span>{% if S_ZODIAC_MEMBER_AUTO %} <span class="zodiac-auto-note">({{ lang('ZODIAC_FROM_BIRTHDAY') }})</span>{% endif %}</dd>
+{% elseif S_ZODIAC_MEMBER_NONE %}
+<dt>{{ lang('ZODIAC_SIGN') ~ lang('COLON') }}</dt>
+<dd>{{ lang('ZODIAC_NOT_SET') }}{% if U_ZODIAC_MEMBER_UCP %} &ndash; <a href="{{ U_ZODIAC_MEMBER_UCP }}">{{ lang('ZODIAC_REMIND_LINK') }}</a>{% endif %}</dd>
+{% endif %}
